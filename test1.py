@@ -26,11 +26,13 @@ class Game:
             self._running = False
     def on_loop(self):
         pass
+
     def on_render(self):
         """
         For explosions
         """
         pass
+
     def on_cleanup(self):
         pygame.quit()
 
@@ -45,6 +47,10 @@ class Game:
             self.on_render()
         self.on_cleanup()
 
+class Button:
+
+    def __init__(self):
+        pass
 if __name__ == "__main__" :
     theGame = Game()
     theGame.on_execute()

@@ -45,3 +45,7 @@ class Button:
                 else: return False
             else: return False
         else: return False
+
+
+if __name__ == '__main__':
+    
