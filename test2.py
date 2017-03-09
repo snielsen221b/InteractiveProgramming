@@ -25,7 +25,7 @@ class Text:
         TextSurf, TextRect = self.message(largeText)
         gameDisplay.blit(TextSurf, TextRect)
         pygame.display.update()
-        time.sleep(0.5) # How long game pauses before next step (buttons) appear
+        time.sleep(0.5)  # How long game pauses before next step appears
 
 
 class Button:
@@ -34,21 +34,38 @@ class Button:
     the Game cass and take in the button sizes, color, and color the button
     changes to when the mouse hovers over it.
     """
-    def __init__(self, size=(150, 450, 100, 50), color=(200, 0, 0), color_bright=(255, 0, 0)):
+    def __init__(self, size=(150, 450, 100, 50), color=(200, 0, 0),
+                 color_bright=(255, 0, 0)):
         # initial values are defined in case the program doesn't. These values
         # are updated from the Gane class with self.size = size, etc.
         self.size = size
         self.color = color
         self.color_bright = color_bright
+        self.mouse = pygame.mouse.get_pos()
+        self.click = pygame.mouse.get_pressed()
 
     def make_rectangle(self, gameDisplay):
         # Draws the rectangle that defines the button with a color and size
         # pulled from itself.
-        #mouse = pygame.house.get_pos()
-        #if 100+200 > mouse[0] > 100 and 200+350 > mouse[1] > 350:
-        #    pygame.draw.rect(gameDisplay, self.color_bright, self.size)
-        #else:
+        mouse = pygame.mouse.get_pos()
+        if 100+200 > mouse[0] > 100 and 200+350 > mouse[1] > 200:
+            pygame.draw.rect(gameDisplay, self.color_bright, self.size)
+        else:
             pygame.draw.rect(gameDisplay, self.color, self.size)
+
+    def button_action(self, gameDisplay, action=None):
+
+        x = self.size[0]
+        y = self.size[1]
+        w = self.size[2]
+        h = self.size[3]
+
+        if x+w > self.mouse[0] > x and y+h > self.mouse[1] > y:
+            self.make_rectangle(gameDisplay)
+            if self.click[0] == 1 and action !=None:
+                action()
+        else:
+            self.make_rectangle(gameDisplay)
 
 
 class Game:
@@ -82,26 +99,26 @@ class Game:
         # Ans = short
         riddle.message_display(self.gameDisplay)
 
-        button1 = Button(size=(100, 200, 200, 350), color=(self.mystery), color_bright=(self.bright_mystery))
-        button1.make_rectangle(self.gameDisplay)
-
+        button1 = Button(size=(100, 200, 200, 350), color=(self.mystery),
+                         color_bright=(self.red))
         # caption1 = Text("Short", self.white)
         # caption1.message_display(self.gameDisplay)
 
         button2 = Button(size=(500, 200, 200, 350), color=(self.mystery2))
-        button2.make_rectangle(self.gameDisplay)
 
         while not self.crashed:
-
             for event in pygame.event.get():
+                print(event)
                 if event.type == pygame.QUIT:
                     self.crashed = True
+                    pygame.quit()
+                    quit()
 
-                print(event)
+            button1.button_action(self.gameDisplay)
+            button2.button_action(self.gameDisplay)
 
             pygame.display.update()
             self.clock.tick(60)
-
         pygame.quit()
         quit()
 
