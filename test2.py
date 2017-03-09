@@ -120,7 +120,7 @@ class Game:
             pygame.display.update()
             self.clock.tick(60)
         pygame.quit()
-        quit()
+        quit()  
 
 
 if __name__ == '__main__':
